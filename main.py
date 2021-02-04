@@ -41,4 +41,10 @@ async def embed(ctx, *, info=None):
     embed.set_thumbnail(url=ctx.author.avatar_url)
     await ctx.send(embed=embed)
 
+for file in os.listdir('cogs'):
+    if file.endswith('.py'):
+        name = file[:-3]
+        client.load_extension(f'cogs.{name}')
+        print(f'{file} cog has been imported')
+
 client.run(os.environ['DISCORD_TOKEN'])
