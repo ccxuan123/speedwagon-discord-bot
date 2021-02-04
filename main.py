@@ -1,30 +1,44 @@
 import discord
+from discord.ext import commands
 import os
-import requests
-import json
+import datetime
 
 client = discord.Client()
+client = commands.Bot(command_prefix = '$')
 
-def get_quote():
-  response = requests.get("https://zenquotes.io/api/random")
-  json_data = json.loads(response.text)
-  quote = json_data[0]['q'] + " -" + json_data[0]['a']
-  return(quote)
+#logging for bot
+@client.event
+async def on_connect():
+    print(f'Bot {client.user} is connected to discord')
 
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print(f'Bot logged in as {client.user}')
 
 @client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+async def on_resumed():
+    print(f'Bot {client.user} is resumed to session')
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-    
-    if message.content.startswith('$inspire'):
-        quote = get_quote()
-        await message.channel.send(quote)
+@client.event
+async def on_disconnect():
+    print(f'Bot {client.user} is disconnected')
+
+#test command
+@client.command(aliases = ['t', 'hello'])
+async def test(ctx):
+    await ctx.send('Are you testing me?')
+
+@client.command()
+async def embed(ctx, *, info=None):
+    embed = discord.Embed(
+        title = 'Embed',
+        description = info,
+        colour = ctx.author.colour
+    )
+    embed.set_author(name = ctx.author.display_name, icon_url = ctx.author.avatar_url)
+    embed.set_footer(icon_url=client.user.avatar_url, text="Speedwagon Foundation")
+    embed.timestamp = datetime.datetime.utcnow()
+    embed.set_thumbnail(url=ctx.author.avatar_url)
+    await ctx.send(embed=embed)
 
 client.run(os.environ['DISCORD_TOKEN'])
