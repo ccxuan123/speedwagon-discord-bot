@@ -18,10 +18,7 @@ class NHentai(commands.Cog):
         self.bot = bot
     
     async def cog_before_invoke(self, ctx: Context):
-        """
-        As the scrapping takes time, we trigger a `typing` indicator whenever
-        any command in invoked.
-        """
+        #As the scrapping takes time, we trigger a `typing` indicator whenever any command in invoked.
         await ctx.channel.trigger_typing()
 
     async def cog_command_error(self, ctx, error):
