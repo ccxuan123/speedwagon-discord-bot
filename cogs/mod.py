@@ -2,7 +2,7 @@ import discord
 import datetime
 from discord.ext import commands
 
-class mod(commands.Cog):
+class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
@@ -11,4 +11,4 @@ class mod(commands.Cog):
         await ctx.send('Cog `mod` is working')
 
 def setup(bot):
-    bot.add_cog(mod(bot))
+    bot.add_cog(Mod(bot))
