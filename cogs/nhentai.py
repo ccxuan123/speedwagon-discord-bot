@@ -22,6 +22,11 @@ class NHentai(commands.Cog):
         await ctx.channel.trigger_typing()
 
     async def cog_command_error(self, ctx, error):
+        """
+        This function is responsible for Error Handling. Everytime a commands raises
+        an Error, this function gets invoked and sends the Error message to the Channel
+        the command was given.
+        """
         logging.error(f'{type(error).__name__}:{error}')    #Log the error in the console
         
         if isinstance(error, commands.CheckFailure):
@@ -43,7 +48,7 @@ class NHentai(commands.Cog):
 
     @commands.command()
     async def nh_get(self, ctx, id):
-        """<id>   Search the manga from Nhentai with id"""
+        """Search the manga from Nhentai with id"""
         try:
             hnt = Hentai(id)
 
@@ -57,12 +62,20 @@ class NHentai(commands.Cog):
     
     @commands.command(aliases = ['horny', 'lonely'])
     async def nh_random(self, ctx):
-        """Randomly search manga from NHentai"""
+        """Ger a random manga from NHentai"""
         hnt = Utils.get_random_hentai()
         embed = self.make_embed(hnt)
         await ctx.send(embed=embed)
-            
     
+    @commands.command()
+    async def nh_search(self, ctx: Context, *, query: str):
+        """
+        search keyword in NHentai
+        """
+        result = Utils.search_by_query(query)
+        embed  = self.process_search_result(result)
+        msg = await ctx.send(embed=embed)
+
     @staticmethod
     def hentai_url(hnt: Hentai):
         return f"https://nhentai.net/g/{hnt.id}"
@@ -72,6 +85,9 @@ class NHentai(commands.Cog):
         def convert(tag: list) -> str:
             lst = list(map(lambda x: x.name, tag))
             return ", ".join(lst)
+        
+        def convert_list(tag: list) -> list:
+            return list(map(lambda x: x.name, tag))
 
         embed = discord.Embed(
             colour = discord.Colour.random(),
@@ -92,9 +108,30 @@ class NHentai(commands.Cog):
         if hnt.artist: description += f"`artist`   :   {convert(hnt.artist)}"
 
         embed.description = description
-        embed.set_footer(text="Speedwagon Foundation got ur back")
+        embed.set_footer(text="Speedwagon Foundation got ur back")           
+        
+        for e in convert_list(hnt.tag):
+            if e == "lolicon":
+                embed.set_footer(text="Speedwagon Foundation can't cover u from FBI")
+            
         embed.timestamp = datetime.datetime.utcnow()
         return embed
+
+    @staticmethod
+    def process_search_result(result: list):
+        description = ""
+        for i, hentai in enumerate(result):
+            if i > 9: break
+            description = description + f"{i+1}. {NHentai.get_url_hidden(hentai)}"+\
+                f"  ({hentai.id})"+\
+                f" | Pages **{hentai.num_pages}**"+\
+                f"| ❤ **{hentai.num_favorites}**\n\n"
+
+        return discord.Embed(description=description)
+    
+    @staticmethod
+    def get_url_hidden(hentai: Hentai):
+        return f"[{hentai.title(Format.Pretty)}]({NHentai.hentai_url(hentai)})"
 
 def setup(bot):
     bot.add_cog(NHentai(bot))
