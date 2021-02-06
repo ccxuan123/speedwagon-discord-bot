@@ -74,6 +74,8 @@ class NHentai(commands.Cog):
         """
         result = Utils.search_by_query(query)
         embed  = self.process_search_result(result)
+        embed.set_footer(text="Search report from Speedwagon Foundation")  
+        embed.timestamp = datetime.datetime.utcnow()
         msg = await ctx.send(embed=embed)
 
     @staticmethod
@@ -127,7 +129,7 @@ class NHentai(commands.Cog):
                 f" | Pages **{hentai.num_pages}**"+\
                 f"| ❤ **{hentai.num_favorites}**\n\n"
 
-        return discord.Embed(description=description)
+        return discord.Embed(title='Search Result', description=description)
     
     @staticmethod
     def get_url_hidden(hentai: Hentai):
