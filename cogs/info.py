@@ -5,6 +5,10 @@ from discord.ext import commands
 class Information(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+    
+    async def cog_before_invoke(self, ctx: Context):
+        #As the scrapping takes time, we trigger a `typing` indicator whenever any command in invoked.
+        await ctx.channel.trigger_typing()
 
     @commands.command()
     async def ping(self, ctx):

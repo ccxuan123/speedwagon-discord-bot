@@ -8,6 +8,10 @@ import requests
 class FunCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+    
+    async def cog_before_invoke(self, ctx):
+        #As the scrapping takes time, we trigger a `typing` indicator whenever any command in invoked.
+        await ctx.channel.trigger_typing()
 
     @commands.command(aliases = ['coin', 'flip'])
     async def coinflip(self, ctx):
@@ -37,21 +41,17 @@ class FunCommands(commands.Cog):
     @commands.command()
     async def cat(self, ctx):
         """Random cat image"""
-        """need to fix the refresh button or delete it"""
         embed = discord.Embed()
-        
         embed.set_image(url=self.get_cat())
-        
-        message = await ctx.send(embed=embed)
-        await message.add_reaction('🔃')
-        def check(reaction, user):
-            return user == ctx.author and str(reaction.emoji) == '🔃'
-        reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
-        if str(reaction.emoji) == '🔃':
-            new_image_url = self.get_cat()
-            embed_refresh = discord.Embed()
-            embed_refresh.set_image(url=new_image_url)
-            await message.edit(embed=embed_refresh)
+        #embed.set_footer(text="Presented by Speedwagon Foundation")
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def refuse(self, ctx):
+        """I refuse!!!"""
+        embed = discord.Embed(title="I refuse!")
+        embed.set_image(url='https://media.tenor.com/images/20c76a29e9da31861c56f416713b8462/tenor.gif')
+        await ctx.send(embed=embed)
 
     
 
