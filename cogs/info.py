@@ -6,7 +6,7 @@ class Information(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    async def cog_before_invoke(self, ctx: Context):
+    async def cog_before_invoke(self, ctx):
         #As the scrapping takes time, we trigger a `typing` indicator whenever any command in invoked.
         await ctx.channel.trigger_typing()
 
