@@ -35,3 +35,4 @@ for file in os.listdir('cogs'):
         print(f'{file} cog has been imported')
 
 client.run(os.environ['DISCORD_TOKEN'])
+ 
