@@ -23,11 +23,6 @@ async def on_resumed():
 async def on_disconnect():
     print(f'Bot {client.user} is disconnected')
 
-#test command
-@client.command(aliases = ['t', 'hello'])
-async def test(ctx):
-    await ctx.send('Are you testing me?')
-
 for filename in os.listdir('cogs'):
     if filename.endswith('.py'):
         #name = file[:-3]
