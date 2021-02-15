@@ -5,6 +5,9 @@ import os
 import asyncpraw
 import random
 
+#need to fix the method of import custom_embeds
+import sys
+sys.path.append('..')
 from utils.custom_embeds import ErrorEmbed
 
 class Reddit(commands.Cog):
