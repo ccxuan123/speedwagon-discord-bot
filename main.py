@@ -28,11 +28,11 @@ async def on_disconnect():
 async def test(ctx):
     await ctx.send('Are you testing me?')
 
-for file in os.listdir('cogs'):
-    if file.endswith('.py'):
-        name = file[:-3]
-        client.load_extension(f'cogs.{name}')
-        print(f'{file} cog has been imported')
+for filename in os.listdir('cogs'):
+    if filename.endswith('.py'):
+        #name = file[:-3]
+        client.load_extension(f'cogs.{filename[:-3]}')
+        print(f'{filename[:-3]} cog has been imported')
 
 client.run(os.environ['DISCORD_TOKEN'])
  

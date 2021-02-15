@@ -1,4 +1,7 @@
-aiohttp==3.7.3
+discord
+hentai==3.2.3
+asyncpraw
+aiohttpaiohttp==3.7.3
 appdirs==1.4.4
 async-timeout==3.0.1
 asyncpraw==7.1.1
