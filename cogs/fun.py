@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-#import aiohttp
+import aiohttp
 import random
 from discord.ext.commands.core import command 
 import requests
@@ -47,18 +47,17 @@ class FunCommands(commands.Cog):
             embed.set_footer(text="From https://api.thecatapi.com/")
             await ctx.send(embed=embed)
 
-    #@commands.command()
-    #async def dog(self, ctx):
-    #   """Random dog image"""
-    #   async with ctx.channel.typing():
-    #        async with aiohttp.ClientSession() as cs:
-    #            async with cs.get("https://random.dog/woof.json") as r:
-    #                data = await r.json()
-    ##                embed = discord.Embed()
-     #               embed.set_image(url = data['url'])
-    #                embed.set_footer(text = 'http://random.dog/')
-    #                await ctx.send(embed=embed)
-
+    @commands.command()
+    async def dog(self, ctx):
+       """Random dog image"""
+       async with ctx.channel.typing():
+            async with aiohttp.ClientSession() as cs:
+                async with cs.get("https://random.dog/woof.json") as r:
+                    data = await r.json()
+                    embed = discord.Embed()
+                    embed.set_image(url = data['url'])
+                    embed.set_footer(text = 'http://random.dog/')
+                    await ctx.send(embed=embed)
 
     @commands.command()
     async def refuse(self, ctx):
