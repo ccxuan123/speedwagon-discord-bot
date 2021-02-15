@@ -7,6 +7,9 @@ import logging
 from hentai import Hentai, Format, Utils
 import datetime
 
+#need to fix the method of import custom_embeds
+import sys
+sys.path.append('..')
 from utils.custom_embeds import ErrorEmbed
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s]\t%(message)s")
